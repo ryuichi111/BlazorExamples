@@ -34,8 +34,8 @@ namespace web_api_blazor.Models {
         public Clouds Clouds { get; set; }
         public Wind Wind { get; set; }
         public Sys Sys { get; set; }
-        public DateTime Dt_Txt { get; set; }
-        public DateTime DtJp { get { return this.Dt_Txt.AddHours(9); } }
+        public DateTimeOffset Dt_Txt { get; set; }
+        public DateTime DtJp { get { return this.Dt_Txt.DateTime.AddHours(9); } }
         public Rain Rain { get; set; }
     }
 
@@ -47,13 +47,13 @@ namespace web_api_blazor.Models {
     public partial class MainClass
     {
         public double Temp { get; set; }
-        public double TempMin { get; set; }
-        public double TempMax { get; set; }
+        public double Temp_Min { get; set; }
+        public double Temp_Max { get; set; }
         public double Pressure { get; set; }
-        public double SeaLevel { get; set; }
-        public double GrndLevel { get; set; }
+        public double Sea_Level { get; set; }
+        public double Grnd_Level { get; set; }
         public long Humidity { get; set; }
-        public double TempKf { get; set; }
+        public double Temp_Kf { get; set; }
     }
 
     public partial class Rain
