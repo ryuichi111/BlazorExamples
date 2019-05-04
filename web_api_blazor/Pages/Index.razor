@@ -1,0 +1,59 @@
+﻿@page "/"
+@using web_api_blazor.Models
+@inject HttpClient httpClient
+
+<h1>OpenWeatherMap で お天気情報検索</h1>
+
+<div class="form-group">
+  <label for="text1">Your APPID:</label>
+  <input type="text" class="form-control" bind="@AppID" />
+</div>
+<div class="form-group">
+  <label for="passwd1">Location:</label>
+  <input type="text" class="form-control" bind="@Location" />
+</div>
+<div class="form-group">
+  <input type="button" onclick="@Search" value="検索" />
+</div>
+<hr />
+@if( WeatherResult != null ) {
+  <div>CityName: @WeatherResult.City.Name</div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">日時</th>
+        <th scope="col">気温</th>
+        <th scope="col">気圧(hPa)</th>
+        <th scope="col">天気</th>
+      </tr>
+    </thead>
+    <tbody>
+    @foreach (var summary in WeatherResult.List)
+    {
+      <tr>
+        <th scope="row">@summary.DtJp</th>
+        <td>@summary.Main.Temp</td>
+        <td>@summary.Main.Pressure</td>
+        <td>
+          @summary.Weather[0].Main
+          (
+          @summary.Weather[0].Main
+          )
+        </td>
+      </tr>
+    }
+    </tbody>
+  </table>  
+}
+
+@functions {
+  private string AppID { get; set; }
+  private string Location { get; set; } = "Tokyo";
+  private WeatherResult WeatherResult { get; set; } = null;
+
+  private async void Search() {
+    string url = $"http://api.openweathermap.org/data/2.5/forecast?q={Location}&units=metric&APPID={AppID}";
+    this.WeatherResult = await httpClient.GetJsonAsync<WeatherResult>(url);
+    this.StateHasChanged();
+  }
+}
