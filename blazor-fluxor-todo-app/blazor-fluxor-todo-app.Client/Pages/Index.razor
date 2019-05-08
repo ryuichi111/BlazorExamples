@@ -1,0 +1,77 @@
+﻿@page "/"
+
+@using Blazor.Fluxor
+@using blazor_fluxor_todo_app.Client.Store
+@using blazor_fluxor_todo_app.Shared
+
+@inject IDispatcher Dispatcher
+@inject IState<TodoState> TodoState
+
+@TodoState.Value.ErrorMessage
+
+<div class="card">
+  <div class="card-header">Your Todo List</div>
+  <div class="card-body">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Title</th>
+          <th>Priority</th>
+        </tr>
+      </thead>
+      @foreach(var todoItem in TodoState.Value.TodoItems) {
+        string trClass = todoItem.Priority == Priority.High ? "table-danger" : "";
+        
+        <tr class="@trClass">
+          <td>@todoItem.ID</td>
+          <td>@todoItem.Title</td>
+          <td>@todoItem.Priority</td>
+        </tr>
+      }
+    </table>
+  </div>
+</div>
+
+<hr />
+
+<div class="card" style="width: 20rem;">
+  <div class="card-header">Add new Todo</div>
+  <div class="card-body">
+    <div class="form-group">
+      <label for="title">Title:</label>
+      <input type="text" id="title" class="form-control" bind="@NewTodo" />
+    </div>
+    <div class="form-group">
+      <label for="passwd1">Priority:</label>
+      <select bind="@Priority">
+          <option value=@Priority.High>@Priority.High.ToString()</option>
+          <option value=@Priority.Normal>@Priority.Normal.ToString()</option>
+          <option value=@Priority.Low>@Priority.Low.ToString()</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <input type="button" class="btn btn-primary" onclick="@AddTodo" value="add todo" />
+    </div>
+  </div>
+</div>
+
+@functions {
+    private string NewTodo { get; set; } = "";
+    private Priority Priority { get; set; } = Priority.Normal;
+
+    private void AddTodo()
+    {
+        var action = new AddTodoItemAction(this.NewTodo, this.Priority);
+        Dispatcher.Dispatch(action);
+    }
+
+    protected override void OnInit()
+    {
+        base.OnInit();
+        
+        TodoState.Subscribe(this);
+        
+        Dispatcher.Dispatch(new FetchTodoItemsAction());
+    }
+}
