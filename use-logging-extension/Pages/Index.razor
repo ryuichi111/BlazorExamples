@@ -1,0 +1,20 @@
+﻿@page "/"
+@using use_logging_extension.Models
+@using Microsoft.Extensions.Logging
+@using Blazor.Extensions.Logging
+@inject ILogger<Index> logger
+
+<input type="button" onclick="@WriteTextLog" value="ログ出力（テキスト）" />
+<input type="button" onclick="@WriteCustomObjectLog" value="ログ出力（カスタムオブジェクト）" />
+
+
+@functions {
+  private void WriteTextLog() {
+    logger.LogDebug("called WriteTextLog()");
+  }
+
+  private void WriteCustomObjectLog() {
+    Employee employee = new Employee() { ID = 1000, FirstName = "ryuichi", LastName = "daigo" };
+    logger.LogDebug<Employee>(employee);
+  }
+}
