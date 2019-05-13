@@ -12,7 +12,7 @@ namespace use_logging_extension
         {
             services.AddLogging(builder => builder
                     .AddBrowserConsole()
-                    .SetMinimumLevel(LogLevel.Error)
+                    .SetMinimumLevel(LogLevel.Trace)
                 );        
         }
 

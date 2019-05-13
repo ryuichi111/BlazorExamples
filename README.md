@@ -11,4 +11,4 @@ http://ryuichi111std.hatenablog.com/entry/2019/05/09/020738
 
 * use-logging-extension  
 Blazor Extensions Loggingを利用したBlazorでのロギングのサンプル  
-
+http://ryuichi111std.hatenablog.com/entry/2019/05/14/022012  
