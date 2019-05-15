@@ -1,0 +1,27 @@
+﻿@page "/"
+@using Sotsera.Blazor.Toaster
+@inject Sotsera.Blazor.Toaster.IToaster Toaster
+<ToastContainer />
+
+<input type="button" value="Show info" onclick="@ShowInfo" />
+<input type="button" value="Show info" onclick="@ShowSuccess" />
+<input type="button" value="Show info" onclick="@ShowWarning" />
+<input type="button" value="Show info" onclick="@ShowError" />
+
+@functions {
+  private void ShowInfo() {
+    Toaster.Info("info message " + System.DateTime.Now.ToString("yyyy/MM/dd H:m:s"));
+  }
+
+  private void ShowSuccess() {
+    Toaster.Success("Success message " + System.DateTime.Now.ToString("yyyy/MM/dd H:m:s"));
+  }
+
+  private void ShowWarning() {
+    Toaster.Warning("Warning message " + System.DateTime.Now.ToString("yyyy/MM/dd H:m:s"));
+  }
+  
+  private void ShowError() {
+    Toaster.Error("Error message " + System.DateTime.Now.ToString("yyyy/MM/dd H:m:s"));
+  }
+}
