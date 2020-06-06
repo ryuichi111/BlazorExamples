@@ -1,0 +1,83 @@
+﻿@page "/"
+@using UseMwBlazorTree.Models
+@using MW.Blazor
+@using System.Linq
+
+<h1>
+    MW.Blazor.Treeの利用サンプル
+</h1>
+
+<Tree Nodes="Items"
+      @bind-ExpandedNodes="ExpandedNodes"
+      @bind-SelectedNode="SelectedItem"
+      HasChildNodes="@(item => item.ChildItems?.Any() == true)"
+      ChildSelector="@(item => item.ChildItems.OrderBy(i => i.Index))">
+    <TitleTemplate>@context.Name</TitleTemplate>
+</Tree>
+<br />
+<p>
+    選択中：@SelectedItem?.Name
+</p>
+
+<button class="btn btn-primary" @onclick="OnUpTeam">上に移動</button>
+<button class="btn btn-primary" @onclick="OnDownTeam">下に移動</button>
+
+@code
+{
+    public List<Team> Items { get; set; } = new List<Team>();
+    public Team SelectedItem { get; set; }
+    public IList<Team> ExpandedNodes { get; set; } = new List<Team>();
+
+    protected override void OnInitialized()
+    {
+        // ツリーに表示するTeam要素を作成
+        //  ルート要素
+        Team org = new Team() { Name = "Sample Corp" };
+        //  ルートの1つ目の子要素
+        Team team = org.AddChild("Team1");
+        team.AddChild("Team1-1");
+        team.AddChild("Team1-2");
+        //  ルートの2つ目の子要素
+        Team team2 = org.AddChild("Team2");
+        team2.AddChild("Team2-1");
+        team2.AddChild("Team2-2");
+        team2.AddChild("Team2-3");
+        team2.AddChild("Team2-4");
+
+        // Treeコンポーネントにバインドするルート要素を追加
+        this.Items.Add(org);
+
+        // 初期表示で開いておくTeam要素を指定
+        this.ExpandedNodes.Add(org);
+        this.ExpandedNodes.Add(team2);
+
+        base.OnInitialized();
+    }
+
+    protected void OnUpTeam()
+    {
+        if (this.SelectedItem == null || this.SelectedItem.Parent == null)
+            return;
+
+        if (this.SelectedItem.Index > 0)
+        {
+            var target = this.SelectedItem.Parent.ChildItems.First(c => c.Index == this.SelectedItem.Index - 1);
+            target.Index++;
+            this.SelectedItem.Index--;
+        }
+    }
+
+    protected void OnDownTeam()
+    {
+        if (this.SelectedItem == null || this.SelectedItem.Parent == null)
+            return;
+
+        if (this.SelectedItem.Index < this.SelectedItem.Parent.ChildItems.Count - 1)
+        {
+            var target = this.SelectedItem.Parent.ChildItems.First(c => c.Index == this.SelectedItem.Index + 1);
+            target.Index--;
+            this.SelectedItem.Index++;
+        }
+    }
+
+}
