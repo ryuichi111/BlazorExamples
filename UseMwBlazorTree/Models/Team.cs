@@ -25,7 +25,7 @@ namespace UseMwBlazorTree.Models
         /// <summary>
         /// 子チームリストを取得または設定します。
         /// </summary>
-        public IList<Team> ChildItems { get; } = new List<Team>();
+        public IList<Team> Children { get; } = new List<Team>();
 
         /// <summary>
         /// 子チームを追加します。
@@ -34,8 +34,8 @@ namespace UseMwBlazorTree.Models
         /// <returns>追加したTeamオブジェクト</returns>
         public Team AddChild(string name)
         {
-            Team team = new Team() { Name = name, Index = this.ChildItems.Count, Parent = this };
-            this.ChildItems.Add(team);
+            Team team = new Team() { Name = name, Index = this.Children.Count, Parent = this };
+            this.Children.Add(team);
             return team;
         }
     }

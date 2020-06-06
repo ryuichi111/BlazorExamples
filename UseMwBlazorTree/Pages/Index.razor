@@ -7,11 +7,11 @@
     MW.Blazor.Treeの利用サンプル
 </h1>
 
-<Tree Nodes="Items"
+<Tree Nodes="Teams"
       @bind-ExpandedNodes="ExpandedNodes"
       @bind-SelectedNode="SelectedItem"
-      HasChildNodes="@(item => item.ChildItems?.Any() == true)"
-      ChildSelector="@(item => item.ChildItems.OrderBy(i => i.Index))">
+      HasChildNodes="@(item => item.Children?.Any() == true)"
+      ChildSelector="@(item => item.Children.OrderBy(i => i.Index))">
     <TitleTemplate>@context.Name</TitleTemplate>
 </Tree>
 <br />
@@ -24,7 +24,7 @@
 
 @code
 {
-    public List<Team> Items { get; set; } = new List<Team>();
+    public List<Team> Teams { get; set; } = new List<Team>();
     public Team SelectedItem { get; set; }
     public IList<Team> ExpandedNodes { get; set; } = new List<Team>();
 
@@ -45,7 +45,7 @@
         team2.AddChild("Team2-4");
 
         // Treeコンポーネントにバインドするルート要素を追加
-        this.Items.Add(org);
+        this.Teams.Add(org);
 
         // 初期表示で開いておくTeam要素を指定
         this.ExpandedNodes.Add(org);
@@ -64,7 +64,7 @@
 
         if (this.SelectedItem.Index > 0)
         {
-            var target = this.SelectedItem.Parent.ChildItems.First(c => c.Index == this.SelectedItem.Index - 1);
+            var target = this.SelectedItem.Parent.Children.First(c => c.Index == this.SelectedItem.Index - 1);
             target.Index++;
             this.SelectedItem.Index--;
         }
@@ -78,9 +78,9 @@
         if (this.SelectedItem == null || this.SelectedItem.Parent == null)
             return;
 
-        if (this.SelectedItem.Index < this.SelectedItem.Parent.ChildItems.Count - 1)
+        if (this.SelectedItem.Index < this.SelectedItem.Parent.Children.Count - 1)
         {
-            var target = this.SelectedItem.Parent.ChildItems.First(c => c.Index == this.SelectedItem.Index + 1);
+            var target = this.SelectedItem.Parent.Children.First(c => c.Index == this.SelectedItem.Index + 1);
             target.Index--;
             this.SelectedItem.Index++;
         }
