@@ -54,6 +54,9 @@
         base.OnInitialized();
     }
 
+    /// <summary>
+    /// Team要素を上に移動
+    /// </summary>
     protected void OnUpTeam()
     {
         if (this.SelectedItem == null || this.SelectedItem.Parent == null)
@@ -67,6 +70,9 @@
         }
     }
 
+    /// <summary>
+    /// Team要素を下に移動
+    /// </summary>
     protected void OnDownTeam()
     {
         if (this.SelectedItem == null || this.SelectedItem.Parent == null)
